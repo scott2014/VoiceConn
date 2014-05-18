@@ -37,11 +37,15 @@ public class MainActivity extends Activity implements SinVoiceRecognition.Listen
         //声音识别类
         mRecognition = new SinVoiceRecognition(CODEBOOK);
         mRecognition.setListener(this);
-
+        
+        //播放文本中文字
         final TextView playTextView = (TextView) findViewById(R.id.playtext);
+        //识别文本中的文字
         TextView recognisedTextView = (TextView) findViewById(R.id.regtext);
+        //识别Handler
         mHanlder = new RegHandler(recognisedTextView);
-
+        
+        
         Button playStart = (Button) this.findViewById(R.id.start_play);
         playStart.setOnClickListener(new OnClickListener() {
             @Override
@@ -76,7 +80,8 @@ public class MainActivity extends Activity implements SinVoiceRecognition.Listen
             }
         });
     }
-
+    
+    //生成7个随机数字
     private String genText(int count) {
         StringBuilder sb = new StringBuilder();
         int pre = 0;
@@ -91,7 +96,8 @@ public class MainActivity extends Activity implements SinVoiceRecognition.Listen
 
         return sb.toString();
     }
-
+    
+    //识别Handler
     private static class RegHandler extends Handler {
         private StringBuilder mTextBuilder = new StringBuilder();
         private TextView mRecognisedTextView;
