@@ -54,7 +54,8 @@ public class PcmPlayer {
     public void setListener(Listener listener) {
         mListener = listener;
     }
-
+    
+    //开始播放----结束播放【将缓存数据加入到BufferData中】
     public void start() {
         LogHelper.d(TAG, "start");
         if (STATE_STOP == mState && null != mAudio) {
