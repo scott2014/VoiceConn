@@ -63,21 +63,25 @@ public class PcmPlayer {
             if (null != mCallback) {
                 mState = STATE_START;
                 LogHelper.d(TAG, "start");
+                
                 if (null != mListener) {
                     mListener.onPlayStart();
                 }
+                
                 while (STATE_START == mState) {
                     LogHelper.d(TAG, "start getbuffer");
 
                     BufferData data = mCallback.getPlayBuffer();
                     if (null != data) {
                         if (null != data.mData) {
+                        	//write方法用于写入音频数据到音轨，该方法是阻塞式的
                             int len = mAudio.write(data.mData, 0, data.getFilledSize());
 
                             if (0 == mPlayedLen) {
                                 mAudio.play();
                             }
                             mPlayedLen += len;
+                            //其实是将音频数据放到播放缓存中
                             mCallback.freePlayData(data);
                         } else {
                             // it is the end of input, so need stop

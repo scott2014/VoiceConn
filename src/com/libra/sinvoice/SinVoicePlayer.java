@@ -83,9 +83,11 @@ public class SinVoicePlayer implements Encoder.Listener, Encoder.Callback, PcmPl
 
     private boolean convertTextToCodes(String text) {
         boolean ret = true;
-
+        
+        //mcodes保存文本中字符在codeBook中的索引
         if (!TextUtils.isEmpty(text)) {
             mCodes.clear();
+            //以0作为开始标识位
             mCodes.add(Common.START_TOKEN);
             int len = text.length();
             for (int i = 0; i < len; ++i) {
@@ -100,6 +102,7 @@ public class SinVoicePlayer implements Encoder.Listener, Encoder.Callback, PcmPl
                 }
             }
             if (ret) {
+            	//6作为结束标识位
                 mCodes.add(Common.STOP_TOKEN);
             }
         } else {
@@ -112,7 +115,13 @@ public class SinVoicePlayer implements Encoder.Listener, Encoder.Callback, PcmPl
     public void play(final String text) {
         play(text, false, 0);
     }
-
+    
+    /**
+     * @param text 文本内容
+     * @param repeat 是否重复
+     * @param muteInterval 周期
+     */
+    //播放的同时开始解码
     public void play(final String text, final boolean repeat, final int muteInterval) {
         if (STATE_STOP == mState && null != mCodeBook && convertTextToCodes(text)) {
             mState = STATE_PENDING;
@@ -211,7 +220,8 @@ public class SinVoicePlayer implements Encoder.Listener, Encoder.Callback, PcmPl
     @Override
     public void onEndEncode() {
     }
-
+    
+    //CallBack回调函数
     @Override
     public BufferData getPlayBuffer() {
         return mBuffer.getFull();
@@ -221,14 +231,16 @@ public class SinVoicePlayer implements Encoder.Listener, Encoder.Callback, PcmPl
     public void freePlayData(BufferData data) {
         mBuffer.putEmpty(data);
     }
-
+    
+    //播放开始，打印日志
     @Override
     public void onPlayStart() {
         if (null != mListener) {
             mListener.onPlayStart();
         }
     }
-
+    
+    //播放结束打印日志
     @Override
     public void onPlayStop() {
         if (null != mListener) {

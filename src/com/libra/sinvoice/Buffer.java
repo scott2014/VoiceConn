@@ -21,8 +21,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Buffer {
     private final static String TAG = "Buffer";
-
+    
+    //生产者队列
     private BlockingQueue<BufferData> mProducerQueue;
+    //消费者队列
     private BlockingQueue<BufferData> mConsumeQueue;
     private int mBufferCount;
     private int mBufferSize;
@@ -131,7 +133,9 @@ public class Buffer {
     public boolean putFull(BufferData data) {
         return putImpl(data, mConsumeQueue);
     }
-
+    
+    //取走BlockingQueue里排在首位的对象,若BlockingQueue为空,阻断进入等待状态直到
+    //BlockingQueue有新的数据被加入; 
     private BufferData getImpl(BlockingQueue<BufferData> queue) {
         if (null != queue) {
             try {
@@ -142,7 +146,8 @@ public class Buffer {
         }
         return null;
     }
-
+    
+    //将缓存数据放入到BlockingQueue
     private boolean putImpl(BufferData data, BlockingQueue<BufferData> queue) {
         if (null != queue && null != data) {
             try {
